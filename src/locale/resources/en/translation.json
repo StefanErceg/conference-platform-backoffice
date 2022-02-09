@@ -1,0 +1,14 @@
+{
+  "title": "Conference platform",
+  "nav": {
+    "conferences": "Conferences",
+    "events": "Events",
+    "resources": "Resources",
+    "ratings": "Ratings",
+    "locations": "Locations",
+    "cities": "Cities",
+    "countries": "Countries",
+    "logout": "Logout"
+  },
+  "search": "Search"
+}
