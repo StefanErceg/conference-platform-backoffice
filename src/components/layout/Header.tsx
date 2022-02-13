@@ -1,6 +1,4 @@
 import React, { FC } from "react";
-import { Button } from "../general/Button";
-import { Search } from "../general/Search";
 
 interface Props {
   title: string;
@@ -8,17 +6,13 @@ interface Props {
   rightTool?: JSX.Element;
 }
 
-export const Header: FC<Props> = () => {
+export const Header: FC<Props> = ({ title, leftTool, rightTool }) => {
   return (
     <header className="main_header">
-      <span className="title">Conferences</span>
+      <span className="title">{title}</span>
       <div className="toolbar">
-        <div className="left_tool">
-          <Button />
-        </div>
-        <div className="right_tool">
-          <Search />
-        </div>
+        <div className="left_tool">{leftTool}</div>
+        <div className="right_tool">{rightTool}</div>
       </div>
     </header>
   );

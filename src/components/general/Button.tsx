@@ -1,18 +1,23 @@
 import React, { FC } from "react";
+import { MaterialIcon } from "./MaterialIcon";
 
 interface Props {
   text: string;
-  onClick: (event: MouseEvent) => void;
+  onClick: () => void;
   icon?: string;
 }
 
-export const Button = () => {
+export const Button: FC<Props> = ({
+  text,
+  onClick,
+  icon = "add_circle_outline",
+}) => {
   return (
-    <button className="btn_general">
+    <button className="btn_general" onClick={(event) => onClick()}>
       <div className="icon">
-        <span className="material-icons md-18">add_circle_outline</span>
+        <MaterialIcon icon={icon} size={18} />
       </div>
-      <span className="text">Add conference</span>
+      <span className="text">{text}</span>
     </button>
   );
 };

@@ -1,4 +1,6 @@
 import React, { FC } from "react";
+import { useHistory } from "react-router-dom";
+import { MaterialIcon } from "../../general/MaterialIcon";
 
 interface Props {
   path: string;
@@ -7,10 +9,18 @@ interface Props {
 }
 
 export const SidebarLink: FC<Props> = ({ path, text, icon }) => {
+  let history = useHistory();
+
+  const handleSelect = () => {
+    history.push(path);
+  };
+
+  const selected = history.location.pathname === path;
+
   return (
-    <li className={`${false && "selected"}`}>
+    <li className={`${selected ? "selected" : ""}`} onClick={handleSelect}>
       <div className="icon">
-        <span className="material-icons md-24">{icon}</span>
+        <MaterialIcon icon={icon} size={24} />
       </div>
       <span className="text">{text}</span>
     </li>

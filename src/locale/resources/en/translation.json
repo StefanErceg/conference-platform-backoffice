@@ -1,5 +1,4 @@
 {
-  "title": "Conference platform",
   "nav": {
     "conferences": "Conferences",
     "events": "Events",
@@ -10,5 +9,12 @@
     "countries": "Countries",
     "logout": "Logout"
   },
-  "search": "Search"
+  "addCountry": "Add country",
+  "title": "Conference platform",
+  "search": "Search",
+  "edit": "Edit",
+  "delete": "Delete",
+  "actions": "Actions",
+  "id": "ID",
+  "name": "Name"
 }
