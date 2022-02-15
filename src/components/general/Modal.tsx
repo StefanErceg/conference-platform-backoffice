@@ -8,7 +8,12 @@ interface Props {
   footer?: JSX.Element;
 }
 
-export const Modal: FC<Props> = ({ close, title }) => {
+export const Modal: FC<Props> = ({
+  close,
+  title,
+  body = <></>,
+  footer = <></>,
+}) => {
   return (
     <div className="modal_wrapper">
       <div className="modal">
@@ -18,8 +23,8 @@ export const Modal: FC<Props> = ({ close, title }) => {
             <MaterialIcon icon="close" size={22} />
           </div>
         </div>
-        <div className="modal_body"></div>
-        <div className="modal_footer">aa</div>
+        <div className="modal_body">{body}</div>
+        <div className="modal_footer">{footer}</div>
       </div>
     </div>
   );

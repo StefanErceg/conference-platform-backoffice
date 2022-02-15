@@ -9,12 +9,17 @@
     "countries": "Countries",
     "logout": "Logout"
   },
-  "addCountry": "Add country",
+  "addCity": "Add city",
   "title": "Conference platform",
   "search": "Search",
   "edit": "Edit",
   "delete": "Delete",
   "actions": "Actions",
   "id": "ID",
-  "name": "Name"
+  "name": "Name",
+  "save": "Save",
+  "cancel": "Cancel",
+
+  "addCountry": "Add country",
+  "editCountry": "Edit country"
 }

@@ -5,15 +5,20 @@ interface Props {
   text: string;
   onClick: () => void;
   icon?: string;
+  className?: string;
 }
 
 export const Button: FC<Props> = ({
   text,
   onClick,
   icon = "add_circle_outline",
+  className = "",
 }) => {
   return (
-    <button className="btn_general" onClick={(event) => onClick()}>
+    <button
+      className={`btn_general ${className}`}
+      onClick={(event) => onClick()}
+    >
       <div className="icon">
         <MaterialIcon icon={icon} size={18} />
       </div>
