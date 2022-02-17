@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import api from "../../../api";
 import { Button } from "../../../components/general/Button";
 import { Modal } from "../../../components/general/Modal";
+import { SaveFooter } from "../../../components/general/SaveFooter";
 import { Country } from "../types";
 
 interface Props {
@@ -30,8 +31,8 @@ export const CountryModal: FC<Props> = ({
         updateCountries(created);
       }
       close();
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -42,7 +43,7 @@ export const CountryModal: FC<Props> = ({
 
   return (
     <Modal
-      close={() => close()}
+      close={close}
       title={country == null ? t("addCountry") : t("editCountry")}
       body={
         <div className="column justify_start padding_10">
@@ -57,16 +58,7 @@ export const CountryModal: FC<Props> = ({
           </div>
         </div>
       }
-      footer={
-        <div className="row justify_center align_center margin_10">
-          <Button text={t("save")} onClick={save} className="margin_5" />
-          <Button
-            text={t("cancel")}
-            onClick={() => close()}
-            className="margin_5"
-          />
-        </div>
-      }
+      footer={<SaveFooter save={save} close={close} />}
     />
   );
 };

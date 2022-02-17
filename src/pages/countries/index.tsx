@@ -34,6 +34,7 @@ export const Countries: FC = () => {
       setCountries(data.content);
       setTotal(data.totalElements);
     } catch (error) {
+      console.error(error);
     } finally {
       setLoaded(true);
     }
@@ -88,9 +89,9 @@ export const Countries: FC = () => {
         <TableHeader />
         <tbody>
           {!isEmpty(countries) &&
-            countries?.map((country, index) => (
+            countries?.map((country) => (
               <TableRow
-                key={index}
+                key={country?.id}
                 country={country}
                 openModal={openModal}
                 deleteCountry={deleteCountry}

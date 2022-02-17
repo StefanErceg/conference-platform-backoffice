@@ -13,7 +13,7 @@ export const cities = {
   },
 
   create(name: string, countryId: number) {
-    return http.post("/cities", { name }).then((res) => res.data);
+    return http.post("/cities", { name, countryId }).then((res) => res.data);
   },
 
   update(id: number, name: string, countryId: number) {
@@ -22,7 +22,7 @@ export const cities = {
       .then((res) => res.data);
   },
 
-  delete(id: string) {
+  delete(id: number) {
     return http.delete(`/cities/${id}`).then((res) => res.data);
   },
 };

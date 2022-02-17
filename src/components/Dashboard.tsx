@@ -12,7 +12,7 @@ export const Dashboard = () => {
   }, 200);
   return (
     <div>
-      <Header title={"aaa"} leftTool={<Dropdown />} />
+      <Header title={"aaa"} />
       <Loader loaded={loaded}>
         <table>
           <thead>

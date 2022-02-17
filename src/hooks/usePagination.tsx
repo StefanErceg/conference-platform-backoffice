@@ -20,7 +20,6 @@ export default function usePagination(): PaginationData {
 
   useEffect(() => {
     if (typeof total !== "number") return;
-    console.log(total);
     const numberOfPages = Math.ceil(total / perPage);
     const pages = [];
 

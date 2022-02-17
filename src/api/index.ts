@@ -1,5 +1,9 @@
-import { countries } from "./countries";
+import { countries } from './countries';
+import { cities } from './cities';
+import { locations } from './locations';
 
 export default {
-  countries,
+    countries,
+    cities,
+    locations,
 };

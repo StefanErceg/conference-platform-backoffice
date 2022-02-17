@@ -7,6 +7,7 @@ import history from "./history";
 
 import { Countries } from "../pages/countries";
 import { Cities } from "../pages/cities";
+import { Locations } from "../pages/locations";
 
 export const AppRouter = () => {
   return (
@@ -16,6 +17,7 @@ export const AppRouter = () => {
           <Route exact path={"/"} component={Dashboard} />
           <Route exact path={"/cities"} component={Cities} />
           <Route exact path={"/countries"} component={Countries} />
+          <Route exact path={"/locations"} component={Locations} />
         </MainLayout>
       </Switch>
     </Router>

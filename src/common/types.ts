@@ -26,3 +26,8 @@ export interface Sort {
   sorted: boolean;
   unsorted: boolean;
 }
+
+export interface DropdownItem {
+  id: number;
+  name: string;
+}

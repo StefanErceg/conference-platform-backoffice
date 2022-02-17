@@ -1,7 +1,7 @@
 import { Country } from "../countries/types";
 
 export interface City {
-  id: string;
+  id: number;
   name: string;
   countryName: string;
 }
