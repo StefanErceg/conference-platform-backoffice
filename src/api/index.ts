@@ -1,9 +1,13 @@
-import { countries } from './countries';
-import { cities } from './cities';
-import { locations } from './locations';
+import { countries } from './endpoints/countries';
+import { cities } from './endpoints/cities';
+import { locations } from './endpoints/locations';
+import { resources } from './endpoints/resources';
+import { resourceTypes } from './endpoints/resource-types';
 
 export default {
     countries,
     cities,
     locations,
+    resources,
+    resourceTypes,
 };

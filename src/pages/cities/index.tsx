@@ -79,6 +79,7 @@ export const Cities: FC = () => {
                         onClick={() => {
                             openModal(null);
                         }}
+                        icon="add_circle_outline"
                     />
                 }
                 rightTool={<Search onChange={handleSearch} />}

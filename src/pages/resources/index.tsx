@@ -1,5 +1,5 @@
 import { isEmpty } from 'lodash';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import api from '../../api';
 import { Button } from '../../components/general/Button';
@@ -8,27 +8,27 @@ import { Pagination } from '../../components/general/Pagination';
 import { Footer } from '../../components/layout/Footer';
 import { Header } from '../../components/layout/Header';
 import usePagination from '../../hooks/usePagination';
-import { LocationModal } from './components/LocationModal';
+import { ResourceModal } from './components/ResourceModal';
 import { TableHeader } from './components/TableHeader';
 import { TableRow } from './components/TableRow';
-import { Location } from './types';
+import { Resource } from './types';
 
-export const Locations: FC = () => {
+export const Resources: FC = () => {
     const { t } = useTranslation();
-    const [loaded, setLoaded] = useState(true);
-    const [locations, setLocations] = useState<Location[]>([]);
+    const [loaded, setLoaded] = useState(false);
+    const [resources, setResources] = useState<Resource[]>([]);
     const [searchValue, setSearchValue] = useState('');
     const [modalOpened, setModalOpened] = useState(false);
 
     const { setTotal, from, total, perPage, ...pagination } = usePagination();
 
-    const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
+    const [selectedResource, setSelectedResource] = useState<Resource | null>(null);
 
-    const loadLocations = async () => {
+    const loadResources = async () => {
         try {
             setLoaded(false);
-            const data = await api.locations.getAll(from, perPage);
-            setLocations(data.content);
+            const data = await api.resources.getAll(from, perPage);
+            setResources(data.content);
             setTotal(data.totalElements);
         } catch (error) {
             console.error(error);
@@ -38,53 +38,53 @@ export const Locations: FC = () => {
     };
 
     useEffect(() => {
-        loadLocations();
+        loadResources();
     }, [from]);
 
     const handleSearch = (value: string) => {
         setSearchValue(value?.trim());
     };
 
-    const openModal = (location: Location | null) => {
-        setSelectedLocation(location);
+    const openModal = (resource: Resource | null) => {
+        setSelectedResource(resource);
         setModalOpened(true);
     };
 
     const closeModal = () => {
         setModalOpened(false);
-        setSelectedLocation(null);
+        setSelectedResource(null);
     };
 
-    const updateLocations = (updated: Location | null) => {
+    const updateResources = (updated: Resource | null) => {
         if (updated !== null) {
-            if (locations?.find(({ id }) => id === updated?.id)) {
-                setLocations((locations) =>
-                    locations?.map((location) => (location?.id === updated?.id ? updated : location))
+            if (resources?.find(({ id }) => id === updated?.id)) {
+                setResources((resources) =>
+                    resources?.map((resource) => (resource?.id === updated?.id ? updated : resource))
                 );
-            } else setLocations([...locations, updated]);
+            } else setResources([...resources, updated]);
         }
     };
 
-    const deleteLocation = (id: number) => {
-        setLocations((locations) => locations.filter((location) => location?.id !== id));
+    const deleteResource = (id: number) => {
+        setResources((resources) => resources.filter((resource) => resource?.id !== id));
     };
 
     return (
         <Loader loaded={loaded}>
             <Header
-                title={t('nav.locations')}
-                leftTool={<Button text={t('addLocation')} onClick={() => openModal(null)} icon="add_circle_outline" />}
+                title={t('nav.resources')}
+                leftTool={<Button text={t('addResource')} onClick={() => openModal(null)} icon="add_circle_outline" />}
             />
             <table>
                 <TableHeader />
                 <tbody>
-                    {!isEmpty(locations) &&
-                        locations?.map((location) => (
+                    {!isEmpty(resources) &&
+                        resources?.map((resource) => (
                             <TableRow
-                                key={location?.id}
-                                location={location}
+                                key={resource?.id}
+                                resource={resource}
                                 openModal={openModal}
-                                deleteLocation={deleteLocation}
+                                deleteResource={deleteResource}
                             />
                         ))}
                 </tbody>
@@ -98,7 +98,7 @@ export const Locations: FC = () => {
                 right={<Pagination {...pagination} />}
             />
             {modalOpened ? (
-                <LocationModal close={closeModal} location={selectedLocation} updateLocations={updateLocations} />
+                <ResourceModal resource={selectedResource} close={closeModal} updateResources={updateResources} />
             ) : null}
         </Loader>
     );

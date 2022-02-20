@@ -7,14 +7,14 @@ export interface Location {
     address: string;
     room: string;
     city: City;
-    locationTypeName: string;
+    locationTypeName: 'LIVE' | 'ONLINE';
 }
 
 export interface LocationRequest {
     name: string;
-    active: boolean;
     address: string;
+    active: boolean;
     room: string;
-    city: City;
-    locationTypeName: string;
+    cityId: number | null;
+    locationTypeId: number;
 }

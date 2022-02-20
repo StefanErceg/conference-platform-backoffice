@@ -18,6 +18,9 @@
     "select": "Select",
     "id": "ID",
     "name": "Name",
+    "identifier": "Identifier",
+    "description": "Description",
+    "create": "Create",
     "save": "Save",
     "cancel": "Cancel",
     "addCountry": "Add country",
@@ -31,5 +34,9 @@
     "type": "Type",
     "active": "Active",
     "live": "Live",
-    "online": "Online"
+    "online": "Online",
+    "addLocation": "Add location",
+    "editLocation": "Edit location",
+    "addResource": "Add resource",
+    "editResource": "Edit resource"
 }

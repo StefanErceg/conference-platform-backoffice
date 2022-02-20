@@ -1,9 +1,11 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
+import api from '../../../api';
 import { MaterialIcon } from '../../../components/general/MaterialIcon';
 import { TableActions } from '../../../components/general/TableActions';
 import { TooltipWrapper } from '../../../components/general/TooltipWrapper';
 import { Location } from '../types';
+import { LIVE, locationTypes } from '../utils';
 
 interface Props {
     location: Location;
@@ -13,20 +15,18 @@ interface Props {
 
 export const TableRow: FC<Props> = ({ location, openModal, deleteLocation }) => {
     const { t } = useTranslation();
-    const {
-        id,
-        name,
-        address,
-        room,
-        city: { name: cityName },
-        locationTypeName: type,
-        active,
-    } = location;
+    const { id, name, address, room, city, locationTypeName: type, active } = location;
 
-    const LIVE = 'LIVE';
-    const ONLINE = 'ONLINE';
+    const cityName = city?.name || '';
 
-    const deleteHandler = async () => {};
+    const deleteHandler = async () => {
+        try {
+            await api.locations.delete(location?.id);
+            deleteLocation(id);
+        } catch (error) {
+            console.error(error);
+        }
+    };
     return (
         <tr>
             <td className="small text_center">{id}</td>
@@ -35,7 +35,7 @@ export const TableRow: FC<Props> = ({ location, openModal, deleteLocation }) => 
             <td>{room}</td>
             <td>{cityName}</td>
             <td className="small text_center">
-                <TooltipWrapper text={type === LIVE ? t('live') : t('online')}>
+                <TooltipWrapper text={locationTypes[type]?.name}>
                     <MaterialIcon icon={`${type === LIVE ? 'location_city' : 'cloud'}`} />
                 </TooltipWrapper>
             </td>

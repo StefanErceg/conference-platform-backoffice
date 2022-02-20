@@ -1,6 +1,6 @@
-import { PaginationResponse } from '../common/types';
-import { Country } from '../pages/countries/types';
-import { http } from './http';
+import { PaginationResponse } from '../../common/types';
+import { Country } from '../../pages/countries/types';
+import { http } from '../http';
 
 export const countries = {
     getAll(page: number, perPage: number = 15): Promise<PaginationResponse<Country>> {
