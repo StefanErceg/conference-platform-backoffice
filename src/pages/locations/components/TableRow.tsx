@@ -33,10 +33,13 @@ export const TableRow: FC<Props> = ({ location, openModal, deleteLocation }) => 
             <td>{name}</td>
             <td>{address}</td>
             <td>{room}</td>
-            <td>{cityName}</td>
+            <td>{cityName ? cityName : ' / '}</td>
             <td className="small text_center">
                 <TooltipWrapper text={locationTypes[type]?.name}>
-                    <MaterialIcon icon={`${type === LIVE ? 'location_city' : 'cloud'}`} />
+                    <MaterialIcon
+                        icon={`${type === LIVE ? 'location_city' : 'cloud'}`}
+                        color={type === LIVE ? 'blue' : 'yellow'}
+                    />
                 </TooltipWrapper>
             </td>
             <td className="small text_center">

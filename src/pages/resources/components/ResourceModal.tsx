@@ -7,6 +7,7 @@ import { Loader } from '../../../components/general/Loader';
 import { Modal } from '../../../components/general/Modal';
 import { SaveFooter } from '../../../components/general/SaveFooter';
 import { Resource, ResourceRequest, ResourceType } from '../types';
+import { ResourceTypeModal } from './ResourceTypeModal';
 
 interface Props {
     resource: Resource | null;
@@ -23,6 +24,7 @@ export const ResourceModal: FC<Props> = ({ resource = null, close, updateResourc
     const [resourceTypeId, setResourceTypeId] = useState(resource?.resourceType?.id || null);
 
     const [resourceTypes, setResourceTypes] = useState<ResourceType[]>([]);
+    const [newTypeModal, setNewTypeModal] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -63,6 +65,18 @@ export const ResourceModal: FC<Props> = ({ resource = null, close, updateResourc
         } catch (error) {
             console.error(error);
         }
+    };
+
+    const openNewTypeModal = () => {
+        setNewTypeModal(true);
+    };
+
+    const closeNewTypeModal = () => {
+        setNewTypeModal(false);
+    };
+
+    const updateResourceTypes = (newType: ResourceType) => {
+        setResourceTypes((resourceTypes) => [...resourceTypes, newType]);
     };
 
     return (
@@ -110,9 +124,12 @@ export const ResourceModal: FC<Props> = ({ resource = null, close, updateResourc
                             />
                         </div>
                         <div className="col_2 margin_10">
-                            <Button text={t('create')} onClick={() => {}} icon="add_circle_outline" />
+                            <Button text={t('create')} onClick={openNewTypeModal} icon="add_circle_outline" />
                         </div>
                     </div>
+                    {newTypeModal ? (
+                        <ResourceTypeModal close={closeNewTypeModal} updateResourceTypes={updateResourceTypes} />
+                    ) : null}
                 </Loader>
             }
             footer={<SaveFooter save={save} close={close} />}

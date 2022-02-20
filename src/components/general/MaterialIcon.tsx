@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 
 interface Props {
     icon: string;
-    color?: 'red' | 'green' | 'yellow';
+    color?: 'red' | 'green' | 'yellow' | 'blue';
     size?: number;
     onClick?: () => void;
     cursor?: 'pointer' | 'default';

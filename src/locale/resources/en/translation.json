@@ -38,5 +38,6 @@
     "addLocation": "Add location",
     "editLocation": "Edit location",
     "addResource": "Add resource",
-    "editResource": "Edit resource"
+    "editResource": "Edit resource",
+    "addResourceType": "Add resource type"
 }

@@ -7,11 +7,11 @@ export const countries = {
         return http.get(`/countries?page=${page}&size=${perPage}`).then((res) => res.data);
     },
 
-    create(name: string) {
+    create(name: string): Promise<Country> {
         return http.post('/countries', { name }).then((res) => res.data);
     },
 
-    update(id: number, name: string) {
+    update(id: number, name: string): Promise<Country> {
         return http.put(`/countries/${id}`, { name }).then((res) => res.data);
     },
 

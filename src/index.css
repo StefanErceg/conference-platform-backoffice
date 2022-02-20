@@ -23,11 +23,16 @@ input:-moz-ui-invalid {
 }
 
 input {
-    border-radius: 5px;
+    height: 24px;
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid #c6c6c6;
+    background: none;
+    padding-left: 10px;
 }
 
-input {
-    height: 24px;
+input:focus {
+    outline: none;
 }
 
 .main_layout {
@@ -557,8 +562,9 @@ td.small {
     background-color: azure;
     padding: 5px;
     font-size: 16px;
+    /* background: none; */
     border: thin solid rgb(220, 220, 220);
-    border-radius: 5px;
+    border-radius: 3px;
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -636,6 +642,14 @@ td.small {
 
 .material-icons.green {
     color: rgb(97, 156, 97);
+}
+
+.material-icons.blue {
+    color: rgb(0, 0, 128);
+}
+
+.material-icons.yellow {
+    color: rgb(164, 182, 0);
 }
 
 .material-icons.hover_red:hover {

@@ -26,7 +26,7 @@ export const Dropdown: FC<Props> = ({ items = [], selectedItem = null, selectIte
         <div className="dropdown">
             <span className="select_toggler" onClick={toggle}>
                 {(selectedItem && items.find(({ id }) => id === selectedItem)?.name) || nonSelectedText || t('select')}
-                <MaterialIcon icon="expand_more" />
+                <MaterialIcon icon={!contentDisplayed ? 'expand_more' : 'expand_less'} />
             </span>
             <div className={`dropdown_content ${contentDisplayed ? 'active' : ''}`}>
                 {items?.map(({ id, name }) => (
