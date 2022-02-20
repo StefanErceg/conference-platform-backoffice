@@ -9,6 +9,7 @@ import { Countries } from '../pages/countries';
 import { Cities } from '../pages/cities';
 import { Locations } from '../pages/locations';
 import { Resources } from '../pages/resources';
+import { Ratings } from '../pages/ratings';
 
 export const AppRouter = () => {
     return (
@@ -20,6 +21,7 @@ export const AppRouter = () => {
                     <Route exact path={'/countries'} component={Countries} />
                     <Route exact path={'/locations'} component={Locations} />
                     <Route exact path={'/resources'} component={Resources} />
+                    <Route exact path={'/ratings'} component={Ratings} />
                 </MainLayout>
             </Switch>
         </Router>

@@ -91,7 +91,7 @@ export const Resources: FC = () => {
             </table>
             <Footer
                 left={
-                    <span>
+                    <span className="margin_left_25">
                         {t('total')}: {total}
                     </span>
                 }

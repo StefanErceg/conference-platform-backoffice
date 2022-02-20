@@ -20,6 +20,7 @@
     "name": "Name",
     "identifier": "Identifier",
     "description": "Description",
+    "properties": "Properties",
     "create": "Create",
     "save": "Save",
     "cancel": "Cancel",
