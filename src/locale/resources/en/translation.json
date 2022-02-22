@@ -40,5 +40,11 @@
     "editLocation": "Edit location",
     "addResource": "Add resource",
     "editResource": "Edit resource",
-    "addResourceType": "Add resource type"
+    "addResourceType": "Add resource type",
+    "addSchema": "Add schema",
+    "ratingSchemaEditor": "Rating editor",
+    "rangeStart": "Range start",
+    "rangeEnd": "Range end",
+    "ratingSchemaName": "Rating schema name",
+    "availableProperties": "Available properties"
 }

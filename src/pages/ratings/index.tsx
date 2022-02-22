@@ -1,7 +1,9 @@
 import { isEmpty } from 'lodash';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
 import api from '../../api';
+import { Button } from '../../components/general/Button';
 import { Loader } from '../../components/general/Loader';
 import { Pagination } from '../../components/general/Pagination';
 import { Footer } from '../../components/layout/Footer';
@@ -40,18 +42,25 @@ export const Ratings: FC = () => {
         setSearchValue(value?.trim());
     };
 
+    let history = useHistory();
+
+    const handleAdd = () => {
+        history.push('/ratings/editor/new');
+    };
     const deleteSchema = (id: number) => {
         setRatingSchemas((ratingSchemas) => ratingSchemas.filter((schema) => schema?.id !== id));
     };
 
     return (
         <Loader loaded={loaded}>
-            <Header title={t('nav.ratings')} />
+            <Header title={t('nav.ratings')} leftTool={<Button text={t('addSchema')} onClick={handleAdd} />} />
             <table>
                 <TableHeader />
                 <tbody>
                     {!isEmpty(ratingSchemas) &&
-                        ratingSchemas?.map((schema) => <TableRow ratingSchema={schema} deleteSchema={deleteSchema} />)}
+                        ratingSchemas?.map((schema) => (
+                            <TableRow key={schema?.id} ratingSchema={schema} deleteSchema={deleteSchema} />
+                        ))}
                 </tbody>
             </table>
             <Footer

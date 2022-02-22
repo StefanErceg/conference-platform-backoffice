@@ -1,4 +1,6 @@
 import React, { FC } from 'react';
+import { useHistory } from 'react-router-dom';
+import api from '../../../api';
 import { TableActions } from '../../../components/general/TableActions';
 import { RatingSchema } from '../types';
 
@@ -12,9 +14,20 @@ export const TableRow: FC<Props> = ({ ratingSchema, deleteSchema }) => {
 
     const propertiesField = properties?.map(({ name }) => name).join(' | ');
 
-    const editHandler = () => {};
+    const history = useHistory();
 
-    const deleteHandler = () => {};
+    const editHandler = () => {
+        history.push(`/ratings/editor/${id}`);
+    };
+
+    const deleteHandler = async () => {
+        try {
+            await api.ratings.deleteSchema(id);
+            deleteSchema(id);
+        } catch (error) {
+            console.error(error);
+        }
+    };
     return (
         <tr>
             <td>{id}</td>

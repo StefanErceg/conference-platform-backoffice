@@ -10,6 +10,7 @@ import { Cities } from '../pages/cities';
 import { Locations } from '../pages/locations';
 import { Resources } from '../pages/resources';
 import { Ratings } from '../pages/ratings';
+import { RatingSchemaEditor } from '../pages/ratings/components/schema-editor';
 
 export const AppRouter = () => {
     return (
@@ -22,6 +23,7 @@ export const AppRouter = () => {
                     <Route exact path={'/locations'} component={Locations} />
                     <Route exact path={'/resources'} component={Resources} />
                     <Route exact path={'/ratings'} component={Ratings} />
+                    <Route path={'/ratings/editor/:id'} component={RatingSchemaEditor} />
                 </MainLayout>
             </Switch>
         </Router>
