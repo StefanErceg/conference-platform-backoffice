@@ -1,6 +1,5 @@
 import React from 'react';
-import { Route, Router, Switch } from 'react-router-dom';
-import { Dashboard } from '../components/Dashboard';
+import { Redirect, Route, Router, Switch } from 'react-router-dom';
 import { MainLayout } from '../components/layout/MainLayout';
 
 import history from './history';
@@ -11,19 +10,27 @@ import { Locations } from '../pages/locations';
 import { Resources } from '../pages/resources';
 import { Ratings } from '../pages/ratings';
 import { RatingSchemaEditor } from '../pages/ratings/components/schema-editor';
+import { Conferences } from '../pages/conferences';
+import { ConferenceBaseData } from '../pages/conferences/components/editor/base-data';
+import { ConferenceSessions } from '../pages/conferences/components/editor/sessions';
 
 export const AppRouter = () => {
     return (
         <Router history={history}>
             <Switch>
                 <MainLayout>
-                    <Route exact path={'/'} component={Dashboard} />
+                    <Route exact path="/">
+                        <Redirect to="/conferences" />
+                    </Route>
                     <Route exact path={'/cities'} component={Cities} />
                     <Route exact path={'/countries'} component={Countries} />
                     <Route exact path={'/locations'} component={Locations} />
                     <Route exact path={'/resources'} component={Resources} />
                     <Route exact path={'/ratings'} component={Ratings} />
+                    <Route exact path={'/conferences'} component={Conferences} />
                     <Route path={'/ratings/editor/:id'} component={RatingSchemaEditor} />
+                    <Route path="/conferences/editor/:id/base" component={ConferenceBaseData} />
+                    <Route path="/conferences/editor/:id/sessions" component={ConferenceSessions} />
                 </MainLayout>
             </Switch>
         </Router>

@@ -46,5 +46,19 @@
     "rangeStart": "Range start",
     "rangeEnd": "Range end",
     "ratingSchemaName": "Rating schema name",
-    "availableProperties": "Available properties"
+    "availableProperties": "Available properties",
+    "start": "Start",
+    "end": "End",
+    "conferenceEditor": "Conference editor",
+    "previous": "Previous",
+    "next": "Next",
+    "info": "Info",
+    "sessions": "Sessions",
+    "events": "Events",
+    "moderator": "Moderator",
+    "addSession": "Add session",
+    "editSession": "Edit session",
+    "viewEvents": "View events",
+    "location": "Location",
+    "accessCode": "Access code"
 }

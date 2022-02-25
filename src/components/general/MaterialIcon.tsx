@@ -6,7 +6,7 @@ interface Props {
     size?: number;
     onClick?: () => void;
     cursor?: 'pointer' | 'default';
-    hoverColor?: 'red' | 'green' | 'yellow';
+    hoverColor?: 'red' | 'green' | 'yellow' | 'blue';
 }
 
 export const MaterialIcon: FC<Props> = ({

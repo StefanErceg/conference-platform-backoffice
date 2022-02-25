@@ -3,13 +3,14 @@ import { MaterialIcon } from './MaterialIcon';
 
 interface Props {
     close: () => void;
-    size?: 'sm' | 'md' | 'lg';
+    size?: 'sm' | 'md' | 'lg' | 'xl';
     title?: string;
+    header?: JSX.Element;
     body?: JSX.Element;
     footer?: JSX.Element;
 }
 
-export const Modal: FC<Props> = ({ close, size = 'sm', title, body = <></>, footer = <></> }) => {
+export const Modal: FC<Props> = ({ close, size = 'sm', title, header = <></>, body = <></>, footer = <></> }) => {
     return (
         <div className="modal_wrapper">
             <div className={`modal ${size}`}>

@@ -30,7 +30,7 @@ export const TableRow: FC<Props> = ({ ratingSchema, deleteSchema }) => {
     };
     return (
         <tr>
-            <td>{id}</td>
+            <td className="small text_center">{id}</td>
             <td>{name}</td>
             <td>{propertiesField}</td>
             <TableActions onEdit={editHandler} onDelete={deleteHandler} />
