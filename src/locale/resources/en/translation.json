@@ -24,6 +24,7 @@
     "create": "Create",
     "save": "Save",
     "cancel": "Cancel",
+    "confirm": "Confirm",
     "addCountry": "Add country",
     "editCountry": "Edit country",
     "country": "Country",
@@ -38,6 +39,7 @@
     "online": "Online",
     "addLocation": "Add location",
     "editLocation": "Edit location",
+    "resource": "Resource",
     "addResource": "Add resource",
     "editResource": "Edit resource",
     "addResourceType": "Add resource type",
@@ -45,13 +47,16 @@
     "ratingSchemaEditor": "Rating editor",
     "rangeStart": "Range start",
     "rangeEnd": "Range end",
+    "rating": "Rating",
     "ratingSchemaName": "Rating schema name",
     "availableProperties": "Available properties",
     "start": "Start",
     "end": "End",
+    "addConference": "Add conference",
     "conferenceEditor": "Conference editor",
     "previous": "Previous",
     "next": "Next",
+    "finish": "Finish",
     "info": "Info",
     "sessions": "Sessions",
     "events": "Events",
@@ -60,5 +65,28 @@
     "editSession": "Edit session",
     "viewEvents": "View events",
     "location": "Location",
-    "accessCode": "Access code"
+    "accessCode": "Access code",
+    "addEvent": "Add event",
+    "editEvent": "Edit event",
+    "username": "Username",
+    "password": "Password",
+    "login": "Login",
+    "ratingSchema": "Rating schema",
+    "showPassword": "Show password",
+    "eventType": "Event type",
+    "messages": {
+        "confirm": "Are you sure?",
+        "success": {
+            "create": "{{entity}} {{name}} successfully created!",
+            "update": "{{entity}} {{name}} successfully updated!"
+        },
+        "error": {
+            "create": "Error happened while creating {{entity}} {{name}}!",
+            "update": "Error happened while updating {{entity}} {{name}}!"
+        },
+        "warn": {
+            "requiredFields": "Please enter all required fields",
+            "requiredCredentials": "Please enter username and password"
+        }
+    }
 }

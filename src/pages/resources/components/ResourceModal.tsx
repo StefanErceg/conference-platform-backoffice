@@ -6,6 +6,7 @@ import { Dropdown } from '../../../components/general/Dropdown';
 import { Loader } from '../../../components/general/Loader';
 import { Modal } from '../../../components/general/Modal';
 import { SaveFooter } from '../../../components/general/SaveFooter';
+import { useNotify } from '../../../hooks/useNotify';
 import { Resource, ResourceRequest, ResourceType } from '../types';
 import { ResourceTypeModal } from './ResourceTypeModal';
 
@@ -45,25 +46,36 @@ export const ResourceModal: FC<Props> = ({ resource = null, close, updateResourc
         setter(value);
     };
 
+    const { success, error, warn } = useNotify();
+
     const save = async () => {
-        try {
-            if (!name || !identifier || !description || !resourceTypeId) return;
-            const payload: ResourceRequest = {
-                name,
-                identifier,
-                description,
-                resourceTypeId,
-            };
-            if (resource !== null) {
+        if (!name || !identifier || !resourceTypeId) return warn(t('messages.warn.requiredFields'));
+        const payload: ResourceRequest = {
+            name,
+            identifier,
+            description,
+            resourceTypeId,
+        };
+        if (resource !== null) {
+            try {
                 const updated = await api.resources.update(resource.id, payload);
                 updateResources(updated);
-            } else {
+                success(t('messages.success.update', { entity: t('resource'), name }));
+                close();
+            } catch (err) {
+                console.error(err);
+                error(t('messages.error.update', { entity: t('resource'), name }));
+            }
+        } else {
+            try {
                 const created = await api.resources.create(payload);
                 updateResources(created);
+                success(t('messages.success.create', { entity: t('resource'), name }));
+                close();
+            } catch (err) {
+                console.error(err);
+                error(t('messages.error.create', { entity: t('resource'), name }));
             }
-            close();
-        } catch (error) {
-            console.error(error);
         }
     };
 
@@ -88,7 +100,9 @@ export const ResourceModal: FC<Props> = ({ resource = null, close, updateResourc
                 <Loader loaded={loaded}>
                     <div className="column justify_start padding_10"></div>
                     <div className="row justify_start margin_left_30 align_center">
-                        <span className="col_3 margin_10">{t('name')}</span>
+                        <span className="col_3 margin_10">
+                            {t('name')} <span className="text_red">*</span>
+                        </span>
                         <input
                             className="col_4 margin_10"
                             type="text"
@@ -97,7 +111,9 @@ export const ResourceModal: FC<Props> = ({ resource = null, close, updateResourc
                         />
                     </div>
                     <div className="row justify_start margin_left_30 align_center">
-                        <span className="col_3 margin_10">{t('identifier')}</span>
+                        <span className="col_3 margin_10">
+                            {t('identifier')} <span className="text_red">*</span>
+                        </span>
                         <input
                             className="col_4 margin_10"
                             type="text"
@@ -115,7 +131,9 @@ export const ResourceModal: FC<Props> = ({ resource = null, close, updateResourc
                         />
                     </div>
                     <div className="row justify_start margin_left_30 align_center">
-                        <span className="col_3 margin_10">{t('type')}</span>
+                        <span className="col_3 margin_10">
+                            {t('type')} <span className="text_red">*</span>
+                        </span>
                         <div className="col_4 margin_10">
                             <Dropdown
                                 items={resourceTypes}

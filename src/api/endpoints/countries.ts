@@ -3,8 +3,8 @@ import { Country } from '../../pages/countries/types';
 import { http } from '../http';
 
 export const countries = {
-    getAll(page: number, perPage: number = 15): Promise<PaginationResponse<Country>> {
-        return http.get(`/countries?page=${page}&size=${perPage}`).then((res) => res.data);
+    getAll(page: number, perPage: number = 15, sort: string = 'id,asc'): Promise<PaginationResponse<Country>> {
+        return http.get(`/countries?page=${page}&size=${perPage}&sort=${sort}`).then((res) => res.data);
     },
 
     create(name: string): Promise<Country> {

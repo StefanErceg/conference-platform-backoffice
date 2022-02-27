@@ -9,6 +9,7 @@ import { Pagination } from '../../components/general/Pagination';
 import { Footer } from '../../components/layout/Footer';
 import { Header } from '../../components/layout/Header';
 import usePagination from '../../hooks/usePagination';
+import { useSorting } from '../../hooks/useSorting';
 import { TableHeader } from './components/TableHeader';
 import { TableRow } from './components/TableRow';
 import { RatingSchema } from './types';
@@ -17,14 +18,19 @@ export const Ratings: FC = () => {
     const { t } = useTranslation();
     const [loaded, setLoaded] = useState(false);
     const [ratingSchemas, setRatingSchemas] = useState<RatingSchema[]>([]);
-    const [searchValue, setSearchValue] = useState('');
 
     const { setTotal, from, total, perPage, ...pagination } = usePagination();
+
+    const sorting = useSorting();
 
     const loadRatingSchemas = async () => {
         try {
             setLoaded(false);
-            const data = await api.ratings.getAllSchemas(from, perPage);
+            const data = await api.ratings.getAllSchemas(
+                from,
+                perPage,
+                `${sorting.sortProperty},${sorting.sortDirection}`
+            );
             setRatingSchemas(data.content);
             setTotal(data.totalElements);
         } catch (error) {
@@ -36,11 +42,7 @@ export const Ratings: FC = () => {
 
     useEffect(() => {
         loadRatingSchemas();
-    }, [from]);
-
-    const handleSearch = (value: string) => {
-        setSearchValue(value?.trim());
-    };
+    }, [from, sorting.sortDirection, sorting.sortProperty]);
 
     let history = useHistory();
 
@@ -53,9 +55,12 @@ export const Ratings: FC = () => {
 
     return (
         <Loader loaded={loaded}>
-            <Header title={t('nav.ratings')} leftTool={<Button text={t('addSchema')} onClick={handleAdd} />} />
+            <Header
+                title={t('nav.ratings')}
+                leftTool={<Button text={t('addSchema')} icon="add_circle_outline" onClick={handleAdd} />}
+            />
             <table>
-                <TableHeader />
+                <TableHeader {...sorting} />
                 <tbody>
                     {!isEmpty(ratingSchemas) &&
                         ratingSchemas?.map((schema) => (

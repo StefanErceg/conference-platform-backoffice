@@ -4,6 +4,7 @@ import api from '../../../api';
 import { Dropdown } from '../../../components/general/Dropdown';
 import { Modal } from '../../../components/general/Modal';
 import { SaveFooter } from '../../../components/general/SaveFooter';
+import { useNotify } from '../../../hooks/useNotify';
 import { Country } from '../../countries/types';
 import { City } from '../types';
 
@@ -33,19 +34,30 @@ export const CityModal: FC<Props> = ({ close, city = null, updateCities }) => {
         })();
     }, []);
 
+    const { success, error, warn } = useNotify();
+
     const save = async () => {
-        try {
-            if (!name || !selectedCountry) return;
-            if (city !== null) {
+        if (!name || !selectedCountry) return warn(t('messages.warn.requiredFields'));
+        if (city !== null) {
+            try {
                 const updated = await api.cities.update(city?.id, name, selectedCountry);
                 updateCities(updated);
-            } else {
+                success(t('messages.success.update', { entity: t('city'), name }));
+                close();
+            } catch (err) {
+                console.error(err);
+                error(t('messages.error.update', { entity: t('city'), name }));
+            }
+        } else {
+            try {
                 const created = await api.cities.create(name, selectedCountry);
                 updateCities(created);
+                success(t('messages.success.create', { entity: t('city'), name }));
+                close();
+            } catch (err) {
+                console.error(err);
+                error(t('messages.error.create', { entity: t('city'), name }));
             }
-            close();
-        } catch (error) {
-            console.error(error);
         }
     };
 
@@ -61,11 +73,15 @@ export const CityModal: FC<Props> = ({ close, city = null, updateCities }) => {
             body={
                 <div className="column justify_start padding_10">
                     <div className="row justify_center align_center">
-                        <span className="col_4 margin_10">{t('name')}</span>
+                        <span className="col_4 margin_10">
+                            {t('name')} <span className="text_red">*</span>
+                        </span>
                         <input className="col_6 margin_10" type="text" value={name} onChange={handleNameChange} />
                     </div>
                     <div className="row justify_center align_center">
-                        <span className="col_4 margin_10">{t('country')}</span>
+                        <span className="col_4 margin_10">
+                            {t('country')} <span className="text_red">*</span>
+                        </span>
                         <div className="col_6 margin_10">
                             <Dropdown
                                 items={countries}

@@ -5,6 +5,7 @@ import { Dropdown } from '../../../components/general/Dropdown';
 import { Loader } from '../../../components/general/Loader';
 import { Modal } from '../../../components/general/Modal';
 import { SaveFooter } from '../../../components/general/SaveFooter';
+import { useNotify } from '../../../hooks/useNotify';
 import { City } from '../../cities/types';
 import { Location, LocationRequest } from '../types';
 import { locationTypes } from '../utils';
@@ -46,27 +47,38 @@ export const LocationModal: FC<Props> = ({ close, location = null, updateLocatio
         })();
     }, []);
 
+    const { success, error, warn } = useNotify();
+
     const save = async () => {
-        try {
-            if (!name || !address || !room) return;
-            const payload: LocationRequest = {
-                name,
-                address,
-                room,
-                active: true,
-                cityId: selectedCity,
-                locationTypeId: selectedLocationType,
-            };
-            if (location !== null) {
+        if (!name || !address || !room) return warn(t('messages.warn.requiredFields'));
+        const payload: LocationRequest = {
+            name,
+            address,
+            room,
+            active: true,
+            cityId: selectedCity,
+            locationTypeId: selectedLocationType,
+        };
+        if (location !== null) {
+            try {
                 const updated = await api.locations.update(location.id, payload);
                 updateLocations(updated);
-            } else {
+                success(t('messages.success.update', { entity: t('location'), name }));
+                close();
+            } catch (err) {
+                console.error(err);
+                error(t('messages.error.update', { entity: t('location'), name }));
+            }
+        } else {
+            try {
                 const created = await api.locations.create(payload);
                 updateLocations(created);
+                success(t('messages.success.create', { entity: t('location'), name }));
+                close();
+            } catch (err) {
+                console.error(err);
+                error(t('messages.error.create', { entity: t('location'), name }));
             }
-            close();
-        } catch (error) {
-            console.error(error);
         }
     };
     return (
@@ -78,7 +90,9 @@ export const LocationModal: FC<Props> = ({ close, location = null, updateLocatio
                 <Loader loaded={loaded}>
                     <div className="column justify_start padding_10">
                         <div className="row justify_center align_center">
-                            <span className="col_4 margin_10">{t('name')}</span>
+                            <span className="col_4 margin_10">
+                                {t('name')} <span className="text_red">*</span>
+                            </span>
                             <input
                                 className="col_5 margin_10"
                                 type="text"
@@ -87,7 +101,9 @@ export const LocationModal: FC<Props> = ({ close, location = null, updateLocatio
                             />
                         </div>
                         <div className="row justify_center align_center">
-                            <span className="col_4 margin_10">{t('address')}</span>
+                            <span className="col_4 margin_10">
+                                {t('address')} <span className="text_red">*</span>
+                            </span>
                             <input
                                 className="col_5 margin_10"
                                 type="text"
@@ -96,7 +112,9 @@ export const LocationModal: FC<Props> = ({ close, location = null, updateLocatio
                             />
                         </div>
                         <div className="row justify_center align_center">
-                            <span className="col_4 margin_10">{t('room')}</span>
+                            <span className="col_4 margin_10">
+                                {t('room')} <span className="text_red">*</span>
+                            </span>
                             <input
                                 className="col_5 margin_10"
                                 type="text"
@@ -115,7 +133,9 @@ export const LocationModal: FC<Props> = ({ close, location = null, updateLocatio
                             </div>
                         </div>
                         <div className="row justify_center align_center">
-                            <span className="col_4 margin_10">{t('type')}</span>
+                            <span className="col_4 margin_10">
+                                {t('type')} <span className="text_red">*</span>
+                            </span>
                             <div className="col_5 margin_10">
                                 <Dropdown
                                     items={Object.values(locationTypes)}

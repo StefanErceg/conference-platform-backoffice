@@ -1,7 +1,8 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import api from '../../../../../../api';
 import { getDate, getTime } from '../../../../../../common/utils';
+import { ConfirmationModal } from '../../../../../../components/general/ConfirmationModal';
 import { MaterialIcon } from '../../../../../../components/general/MaterialIcon';
 import { TableActions } from '../../../../../../components/general/TableActions';
 import { TooltipWrapper } from '../../../../../../components/general/TooltipWrapper';
@@ -23,6 +24,8 @@ export const TableRow: FC<Props> = ({ session, openSessionModal, deleteSession, 
         openSessionModal(session);
     };
 
+    const [confirmModal, setConfirmModal] = useState(false);
+
     const handleDelete = async () => {
         try {
             await api.sessions.delete(id);
@@ -32,28 +35,33 @@ export const TableRow: FC<Props> = ({ session, openSessionModal, deleteSession, 
         }
     };
     return (
-        <tr>
-            <td className="small text_center">{id}</td>
-            <td>{name}</td>
-            <td>
-                {getDate(start)} | {getTime(start)}h
-            </td>
-            <td>
-                {getDate(end)} | {getTime(end)}h
-            </td>
-            <td>{moderatorField}</td>
-            <td className="text_center">
-                <TooltipWrapper text={t('viewEvents')}>
-                    <MaterialIcon
-                        icon={'event'}
-                        size={24}
-                        cursor="pointer"
-                        hoverColor="blue"
-                        onClick={() => openEventsModal(id)}
-                    />
-                </TooltipWrapper>
-            </td>
-            <TableActions onEdit={handleEdit} onDelete={handleDelete} />
-        </tr>
+        <>
+            <tr>
+                <td className="small text_center">{id}</td>
+                <td>{name}</td>
+                <td>
+                    {getDate(start)} | {getTime(start)}h
+                </td>
+                <td>
+                    {getDate(end)} | {getTime(end)}h
+                </td>
+                <td>{moderatorField}</td>
+                <td className="text_center">
+                    <TooltipWrapper text={t('viewEvents')}>
+                        <MaterialIcon
+                            icon={'event'}
+                            size={24}
+                            cursor="pointer"
+                            hoverColor="blue"
+                            onClick={() => openEventsModal(id)}
+                        />
+                    </TooltipWrapper>
+                </td>
+                <TableActions onEdit={handleEdit} onDelete={() => setConfirmModal(true)} />
+                {confirmModal ? (
+                    <ConfirmationModal onConfirm={handleDelete} onCancel={() => setConfirmModal(false)} />
+                ) : null}
+            </tr>
+        </>
     );
 };

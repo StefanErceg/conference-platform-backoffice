@@ -13,15 +13,14 @@ import { RatingSchemaEditor } from '../pages/ratings/components/schema-editor';
 import { Conferences } from '../pages/conferences';
 import { ConferenceBaseData } from '../pages/conferences/components/editor/base-data';
 import { ConferenceSessions } from '../pages/conferences/components/editor/sessions';
+import { Login } from '../pages/login';
 
 export const AppRouter = () => {
     return (
         <Router history={history}>
             <Switch>
-                <MainLayout>
-                    <Route exact path="/">
-                        <Redirect to="/conferences" />
-                    </Route>
+                <MainLayout sidebarExclude={'login'}>
+                    <Route exact path={'/login'} component={Login} />
                     <Route exact path={'/cities'} component={Cities} />
                     <Route exact path={'/countries'} component={Countries} />
                     <Route exact path={'/locations'} component={Locations} />
@@ -31,6 +30,9 @@ export const AppRouter = () => {
                     <Route path={'/ratings/editor/:id'} component={RatingSchemaEditor} />
                     <Route path="/conferences/editor/:id/base" component={ConferenceBaseData} />
                     <Route path="/conferences/editor/:id/sessions" component={ConferenceSessions} />
+                    <Route exact path="/">
+                        <Redirect to="/conferences" />
+                    </Route>
                 </MainLayout>
             </Switch>
         </Router>

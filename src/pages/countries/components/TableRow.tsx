@@ -1,5 +1,6 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import api from '../../../api';
+import { ConfirmationModal } from '../../../components/general/ConfirmationModal';
 import { TableActions } from '../../../components/general/TableActions';
 import { Country } from '../types';
 
@@ -11,6 +12,8 @@ interface Props {
 
 export const TableRow: FC<Props> = ({ country, openModal, deleteCountry }) => {
     const { id, name } = country;
+
+    const [confirmModal, setConfirmModal] = useState(false);
 
     const deleteHandler = async () => {
         try {
@@ -28,8 +31,11 @@ export const TableRow: FC<Props> = ({ country, openModal, deleteCountry }) => {
                 onEdit={() => {
                     openModal(country);
                 }}
-                onDelete={deleteHandler}
+                onDelete={() => setConfirmModal(true)}
             />
+            {confirmModal ? (
+                <ConfirmationModal onConfirm={deleteHandler} onCancel={() => setConfirmModal(false)} />
+            ) : null}
         </tr>
     );
 };

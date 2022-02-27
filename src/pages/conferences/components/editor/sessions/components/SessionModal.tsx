@@ -98,6 +98,7 @@ export const SessionModal: FC<Props> = ({ session = null, close, updateSessions,
                                         .substring(0, 19)
                                 }
                                 onChange={(event) => handleChange(event, setStart)}
+                                min={new Date().toISOString().substring(0, 16)}
                             />
                         </div>
                         <div className="row justify_start margin_left_30 align_center margin_bottom_10">
@@ -114,6 +115,7 @@ export const SessionModal: FC<Props> = ({ session = null, close, updateSessions,
                                         .substring(0, 19)
                                 }
                                 onChange={(event) => handleChange(event, setEnd)}
+                                min={new Date(start).toISOString().substring(0, 16)}
                             />
                         </div>
                         <div className="row justify_start margin_left_30 align_center margin_bottom_10">

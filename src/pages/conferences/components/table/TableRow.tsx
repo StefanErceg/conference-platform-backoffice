@@ -1,6 +1,8 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import api from '../../../../api';
 import { getDate, getTime } from '../../../../common/utils';
+import { ConfirmationModal } from '../../../../components/general/ConfirmationModal';
 import { TableActions } from '../../../../components/general/TableActions';
 import { Conference } from '../../types';
 
@@ -17,7 +19,18 @@ export const TableRow: FC<Props> = ({ conference, deleteConference }) => {
     const handleEdit = () => {
         history.push(`conferences/editor/${id}/base`);
     };
-    const handleDelete = () => {};
+
+    const [confirmModal, setConfirmModal] = useState(false);
+
+    const deleteHandler = async () => {
+        try {
+            await api.conferences.delete(id);
+            deleteConference(id);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     return (
         <tr>
             <td className="small text_center">{id}</td>
@@ -30,7 +43,10 @@ export const TableRow: FC<Props> = ({ conference, deleteConference }) => {
             </td>
             <td>{description}</td>
 
-            <TableActions onEdit={handleEdit} onDelete={handleDelete} />
+            <TableActions onEdit={handleEdit} onDelete={() => setConfirmModal(true)} />
+            {confirmModal ? (
+                <ConfirmationModal onConfirm={deleteHandler} onCancel={() => setConfirmModal(false)} />
+            ) : null}
         </tr>
     );
 };

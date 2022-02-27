@@ -1,3 +1,4 @@
+import { auth } from './endpoints/auth';
 import { countries } from './endpoints/countries';
 import { cities } from './endpoints/cities';
 import { locations } from './endpoints/locations';
@@ -9,8 +10,10 @@ import { users } from './endpoints/users';
 import { conferences } from './endpoints/conferences';
 import { sessions } from './endpoints/sessions';
 import { events } from './endpoints/events';
+import { eventTypes } from './endpoints/event-types';
 
 export default {
+    auth,
     countries,
     cities,
     locations,
@@ -22,4 +25,5 @@ export default {
     conferences,
     sessions,
     events,
+    eventTypes,
 };

@@ -1,6 +1,7 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import api from '../../../api';
+import { ConfirmationModal } from '../../../components/general/ConfirmationModal';
 import { MaterialIcon } from '../../../components/general/MaterialIcon';
 import { TableActions } from '../../../components/general/TableActions';
 import { TooltipWrapper } from '../../../components/general/TooltipWrapper';
@@ -18,6 +19,8 @@ export const TableRow: FC<Props> = ({ location, openModal, deleteLocation }) => 
     const { id, name, address, room, city, locationTypeName: type, active } = location;
 
     const cityName = city?.name || '';
+
+    const [confirmModal, setConfirmModal] = useState(false);
 
     const deleteHandler = async () => {
         try {
@@ -49,8 +52,12 @@ export const TableRow: FC<Props> = ({ location, openModal, deleteLocation }) => 
                 onEdit={() => {
                     openModal(location);
                 }}
-                onDelete={deleteHandler}
+                onDelete={() => setConfirmModal(true)}
             />
+
+            {confirmModal ? (
+                <ConfirmationModal onConfirm={deleteHandler} onCancel={() => setConfirmModal(false)} />
+            ) : null}
         </tr>
     );
 };

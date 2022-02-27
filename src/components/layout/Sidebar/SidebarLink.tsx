@@ -13,6 +13,9 @@ export const SidebarLink: FC<Props> = ({ path, text, icon }) => {
 
     const handleSelect = () => {
         history.push(path);
+        if (path === '/login') {
+            window.localStorage.removeItem('token');
+        }
     };
 
     const selected = history.location.pathname.includes(path);

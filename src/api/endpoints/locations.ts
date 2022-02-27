@@ -3,8 +3,8 @@ import { Location, LocationRequest } from '../../pages/locations/types';
 import { http } from '../http';
 
 export const locations = {
-    getAll(page: number, perPage: number = 15): Promise<PaginationResponse<Location>> {
-        return http.get(`/locations?page=${page}&size=${perPage}`).then((res) => res.data);
+    getAll(page: number, perPage: number = 15, sort: string = 'id,asc'): Promise<PaginationResponse<Location>> {
+        return http.get(`/locations?page=${page}&size=${perPage}&sort=${sort}`).then((res) => res.data);
     },
 
     create(data: LocationRequest) {

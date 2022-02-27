@@ -3,8 +3,12 @@ import { RatingSchema, RatingSchemaRequest } from '../../pages/ratings/types';
 import { http } from '../http';
 
 export const ratings = {
-    getAllSchemas(page: number, perPage: number = 15): Promise<PaginationResponse<RatingSchema>> {
-        return http.get(`/rating-schemas?page=${page}&size=${perPage}`).then((res) => res.data);
+    getAllSchemas(
+        page: number,
+        perPage: number = 15,
+        sort: string = 'id,asc'
+    ): Promise<PaginationResponse<RatingSchema>> {
+        return http.get(`/rating-schemas?page=${page}&size=${perPage}&sort=${sort}`).then((res) => res.data);
     },
 
     getSchemaById(id: number): Promise<RatingSchema> {

@@ -1,10 +1,11 @@
 import { isEmpty, isNaN } from 'lodash';
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, useHistory } from 'react-router-dom';
 import api from '../../../../../api';
 import { Button } from '../../../../../components/general/Button';
 import { Loader } from '../../../../../components/general/Loader';
+import { Footer } from '../../../../../components/layout/Footer';
 import { Header } from '../../../../../components/layout/Header';
 import { EventsModal } from './components/EventsModal';
 import { SessionModal } from './components/SessionModal';
@@ -76,6 +77,16 @@ export const ConferenceSessions: FC<RouteComponentProps<Props>> = ({
         setSessions((sessions) => sessions.filter(({ id: sessionId }) => sessionId !== id));
     };
 
+    const history = useHistory();
+
+    const goBack = () => {
+        history.push(`/conferences/editor/${id}/base`);
+    };
+
+    const finish = () => {
+        history.push('/conferences');
+    };
+
     return (
         <Loader loaded={loaded}>
             <Header
@@ -97,6 +108,10 @@ export const ConferenceSessions: FC<RouteComponentProps<Props>> = ({
                         ))}
                 </tbody>
             </table>
+            <Footer
+                left={<Button text={t('previous')} onClick={goBack} />}
+                right={<Button text={t('finish')} onClick={finish} />}
+            />
             {sessionModal ? (
                 <SessionModal
                     session={selectedSession}

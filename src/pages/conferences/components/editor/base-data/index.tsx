@@ -3,9 +3,12 @@ import { useTranslation } from 'react-i18next';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import api from '../../../../../api';
 import { Button } from '../../../../../components/general/Button';
+import { Dropdown } from '../../../../../components/general/Dropdown';
 import { Loader } from '../../../../../components/general/Loader';
 import { Footer } from '../../../../../components/layout/Footer';
 import { Header } from '../../../../../components/layout/Header';
+import { useNotify } from '../../../../../hooks/useNotify';
+import { RatingSchema } from '../../../../ratings/types';
 import { ConferenceRequest } from '../../../types';
 
 interface Props {
@@ -19,6 +22,9 @@ export const ConferenceBaseData: FC<RouteComponentProps<Props>> = ({
 }) => {
     const { t } = useTranslation();
     const [loaded, setLoaded] = useState(false);
+    const [ratingSchemas, setRatingSchemas] = useState<RatingSchema[]>([]);
+    // const [selectedRatingSchema, setSelectedRatingSchema] = useState<number | null>(null);
+
     const [conference, setConference] = useState<ConferenceRequest>({
         name: '',
         start: '',
@@ -29,6 +35,8 @@ export const ConferenceBaseData: FC<RouteComponentProps<Props>> = ({
     useEffect(() => {
         (async () => {
             try {
+                const { content: ratingSchemaData } = await api.ratings.getAllSchemas(0, 1000);
+                setRatingSchemas(ratingSchemaData);
                 if (id != null && id != 'new') {
                     const data = await api.conferences.getById(+id);
                     setConference(data);
@@ -52,8 +60,11 @@ export const ConferenceBaseData: FC<RouteComponentProps<Props>> = ({
         history.push('/conferences');
     };
 
+    const { warn } = useNotify();
+
     const goNext = async () => {
-        if (!conference.name || !conference.start || !conference.end) return;
+        if (!conference.name || !conference.start || !conference.end || !conference.visitorRatingSchemaId)
+            return warn(t('messages.warn.requiredFields'));
         try {
             if (id != null && id != 'new') {
                 await api.conferences.update(+id, conference);
@@ -73,7 +84,7 @@ export const ConferenceBaseData: FC<RouteComponentProps<Props>> = ({
             <div className="col_11 margin_30">
                 <div className="row col_5 margin_bottom_30">
                     <label htmlFor="name" className="col_4">
-                        {t('name')}
+                        {t('name')} <span className="text_red">*</span>
                     </label>
                     <input
                         type="text"
@@ -84,7 +95,7 @@ export const ConferenceBaseData: FC<RouteComponentProps<Props>> = ({
                 </div>
                 <div className="row col_5 margin_bottom_30">
                     <label htmlFor="start" className="col_4">
-                        {t('start')}
+                        {t('start')} <span className="text_red">*</span>
                     </label>
                     <input
                         type="datetime-local"
@@ -99,11 +110,12 @@ export const ConferenceBaseData: FC<RouteComponentProps<Props>> = ({
                                 .substring(0, 19)
                         }
                         onChange={(event) => handleChange(event, 'start')}
+                        min={new Date().toISOString().substring(0, 16)}
                     />
                 </div>
                 <div className="row col_5 margin_bottom_30">
                     <label htmlFor="end" className="col_4">
-                        {t('end')}
+                        {t('end')} <span className="text_red">*</span>
                     </label>
                     <input
                         type="datetime-local"
@@ -118,7 +130,20 @@ export const ConferenceBaseData: FC<RouteComponentProps<Props>> = ({
                                 .substring(0, 19)
                         }
                         onChange={(event) => handleChange(event, 'end')}
+                        min={conference?.start && new Date(conference?.start).toISOString().substring(0, 16)}
                     />
+                </div>
+                <div className="row col_5 margin_bottom_30">
+                    <span className="col_4 ">
+                        {t('ratingSchema')} <span className="text_red">*</span>
+                    </span>
+                    <div>
+                        <Dropdown
+                            items={ratingSchemas}
+                            selectItem={(id) => setConference({ ...conference, visitorRatingSchemaId: id })}
+                            selectedItem={conference.visitorRatingSchemaId}
+                        />
+                    </div>
                 </div>
 
                 <div className="row col_5 margin_bottom_30">

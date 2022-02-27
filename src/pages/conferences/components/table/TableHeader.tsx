@@ -1,15 +1,25 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
+import { SortCell } from '../../../../components/general/SortCell';
+import { SortingProps } from '../../../../hooks/useSorting';
 
-export const TableHeader: FC = () => {
+export const TableHeader: FC<SortingProps> = (props) => {
     const { t } = useTranslation();
     return (
         <thead>
             <tr>
-                <th className="small text_center">{t('id')}</th>
-                <th>{t('name')}</th>
-                <th>{t('start')}</th>
-                <th>{t('end')}</th>
+                <SortCell property="id" className="small" aligment="center" {...props}>
+                    {t('id')}
+                </SortCell>
+                <SortCell property="name" {...props}>
+                    {t('name')}
+                </SortCell>
+                <SortCell property="start" {...props}>
+                    {t('start')}
+                </SortCell>
+                <SortCell property="end" {...props}>
+                    {t('end')}
+                </SortCell>
                 <th>{t('description')}</th>
                 <th className="small text_center">{t('actions')}</th>
             </tr>

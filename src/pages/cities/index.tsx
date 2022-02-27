@@ -10,6 +10,7 @@ import { Search } from '../../components/general/Search';
 import { Footer } from '../../components/layout/Footer';
 import { Header } from '../../components/layout/Header';
 import usePagination from '../../hooks/usePagination';
+import { useSorting } from '../../hooks/useSorting';
 import { CityModal } from './components/CityModal';
 import { TableHeader } from './components/TableHeader';
 import { TableRow } from './components/TableRow';
@@ -19,17 +20,18 @@ export const Cities: FC = () => {
     const { t } = useTranslation();
     const [loaded, setLoaded] = useState(false);
     const [cities, setCities] = useState<City[]>([]);
-    const [searchValue, setSearchValue] = useState('');
     const [modalOpened, setModalOpened] = useState(false);
 
     const { setTotal, from, total, perPage, ...pagination } = usePagination();
 
     const [selectedCity, setSelectedCity] = useState<City | null>(null);
 
+    const sorting = useSorting();
+
     const loadCities = async () => {
         try {
             setLoaded(false);
-            const data = await api.cities.getAll(from, perPage);
+            const data = await api.cities.getAll(from, perPage, `${sorting.sortProperty},${sorting.sortDirection}`);
             setCities(data.content);
             setTotal(data.totalElements);
         } catch (error) {
@@ -41,11 +43,7 @@ export const Cities: FC = () => {
 
     useEffect(() => {
         loadCities();
-    }, [from]);
-
-    const handleSearch = (value: string) => {
-        setSearchValue(value?.trim());
-    };
+    }, [from, sorting.sortDirection, sorting.sortProperty]);
 
     const openModal = (city: City | null) => {
         setSelectedCity(city);
@@ -82,10 +80,9 @@ export const Cities: FC = () => {
                         icon="add_circle_outline"
                     />
                 }
-                rightTool={<Search onChange={handleSearch} />}
             />
             <table>
-                <TableHeader />
+                <TableHeader {...sorting} />
                 <tbody>
                     {!isEmpty(cities) &&
                         cities?.map((city) => (

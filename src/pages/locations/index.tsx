@@ -8,6 +8,7 @@ import { Pagination } from '../../components/general/Pagination';
 import { Footer } from '../../components/layout/Footer';
 import { Header } from '../../components/layout/Header';
 import usePagination from '../../hooks/usePagination';
+import { useSorting } from '../../hooks/useSorting';
 import { LocationModal } from './components/LocationModal';
 import { TableHeader } from './components/TableHeader';
 import { TableRow } from './components/TableRow';
@@ -24,10 +25,12 @@ export const Locations: FC = () => {
 
     const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
 
+    const sorting = useSorting();
+
     const loadLocations = async () => {
         try {
             setLoaded(false);
-            const data = await api.locations.getAll(from, perPage);
+            const data = await api.locations.getAll(from, perPage, `${sorting.sortProperty},${sorting.sortDirection}`);
             setLocations(data.content);
             setTotal(data.totalElements);
         } catch (error) {
@@ -39,7 +42,7 @@ export const Locations: FC = () => {
 
     useEffect(() => {
         loadLocations();
-    }, [from]);
+    }, [from, sorting.sortDirection, sorting.sortProperty]);
 
     const handleSearch = (value: string) => {
         setSearchValue(value?.trim());
@@ -76,7 +79,7 @@ export const Locations: FC = () => {
                 leftTool={<Button text={t('addLocation')} onClick={() => openModal(null)} icon="add_circle_outline" />}
             />
             <table>
-                <TableHeader />
+                <TableHeader {...sorting} />
                 <tbody>
                     {!isEmpty(locations) &&
                         locations?.map((location) => (

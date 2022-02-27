@@ -33,7 +33,7 @@ export const navLinks = [
     },
     {
         text: i18n.t('nav.logout'),
-        path: '/logout',
+        path: '/login',
         icon: 'logout',
     },
 ];

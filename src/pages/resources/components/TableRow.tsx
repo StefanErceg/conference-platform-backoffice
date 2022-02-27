@@ -1,6 +1,7 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import api from '../../../api';
+import { ConfirmationModal } from '../../../components/general/ConfirmationModal';
 import { TableActions } from '../../../components/general/TableActions';
 import { Resource } from '../types';
 
@@ -19,6 +20,8 @@ export const TableRow: FC<Props> = ({ resource, openModal, deleteResource }) => 
         description = '',
         resourceType: { name: type = '' },
     } = resource || {};
+
+    const [confirmModal, setConfirmModal] = useState(false);
 
     const deleteHandler = async () => {
         try {
@@ -39,8 +42,12 @@ export const TableRow: FC<Props> = ({ resource, openModal, deleteResource }) => 
                 onEdit={() => {
                     openModal(resource);
                 }}
-                onDelete={deleteHandler}
+                onDelete={() => setConfirmModal(true)}
             />
+
+            {confirmModal ? (
+                <ConfirmationModal onConfirm={deleteHandler} onCancel={() => setConfirmModal(false)} />
+            ) : null}
         </tr>
     );
 };

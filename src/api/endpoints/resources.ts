@@ -4,8 +4,8 @@ import { Resource, ResourceRequest } from '../../pages/resources/types';
 import { http } from '../http';
 
 export const resources = {
-    getAll(page: number, perPage: number = 15): Promise<PaginationResponse<Resource>> {
-        return http.get(`/resources?page=${page}&size=${perPage}`).then((res) => res.data);
+    getAll(page: number, perPage: number = 15, sort: string = 'id,asc'): Promise<PaginationResponse<Resource>> {
+        return http.get(`/resources?page=${page}&size=${perPage}&sort=${sort}`).then((res) => res.data);
     },
 
     create(data: ResourceRequest) {

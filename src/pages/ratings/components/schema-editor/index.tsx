@@ -9,6 +9,7 @@ import { RatingProperty, RatingSchemaRequest } from '../../types';
 import { RatingPropertyRow } from './components/RatingPropertyRow';
 import { DragDropContext, Draggable, DragStart, Droppable, DropResult } from 'react-beautiful-dnd';
 import { SaveFooter } from '../../../../components/general/SaveFooter';
+import { useNotify } from '../../../../hooks/useNotify';
 
 interface Props {
     id: string;
@@ -78,17 +79,28 @@ export const RatingSchemaEditor: FC<RouteComponentProps<Props>> = ({
         }
     };
 
+    const { success, error, warn } = useNotify();
+
     const save = async () => {
-        if (!ratingSchema.name) return;
-        try {
-            if (id != 'new' && id != null) {
+        if (!ratingSchema.name) return warn(t('messages.warn.requiredFields'));
+        if (id != 'new' && id != null) {
+            try {
                 await api.ratings.updateSchema(+id, ratingSchema);
-            } else {
-                await api.ratings.createSchema(ratingSchema);
+                success(t('messages.success.update', { entity: t('rating'), name: ratingSchema?.name }));
+                history.push('/ratings');
+            } catch (err) {
+                console.error(err);
+                error(t('messages.error.update', { entity: t('rating'), name: ratingSchema?.name }));
             }
-            history.push('/ratings');
-        } catch (error) {
-            console.error(error);
+        } else {
+            try {
+                await api.ratings.createSchema(ratingSchema);
+                success(t('messages.success.create', { entity: t('rating'), name: ratingSchema?.name }));
+                history.push('/ratings');
+            } catch (err) {
+                console.error(err);
+                error(t('messages.error.create', { entity: t('rating'), name: ratingSchema?.name }));
+            }
         }
     };
 
@@ -108,7 +120,9 @@ export const RatingSchemaEditor: FC<RouteComponentProps<Props>> = ({
                     <div className="col_6 column border_right margin_10">
                         <span className="rating_properties_header">&#8203;</span>
                         <div className="row col_11 margin_10 padding_10 rating_properties_subheader ">
-                            <span className="col_3 margin_10">{t('ratingSchemaName')}</span>
+                            <span className="col_3 margin_10">
+                                {t('ratingSchemaName')} <span className="text_red">*</span>
+                            </span>
                             <input
                                 className="col_4 margin_10"
                                 type="text"

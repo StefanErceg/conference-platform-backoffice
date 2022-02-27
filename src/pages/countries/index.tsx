@@ -14,23 +14,26 @@ import usePagination from '../../hooks/usePagination';
 import { Pagination } from '../../components/general/Pagination';
 import { Modal } from '../../components/general/Modal';
 import { CountryModal } from './components/CountryModal';
+import { useSorting } from '../../hooks/useSorting';
 
 export const Countries: FC = () => {
     const { t } = useTranslation();
 
     const [loaded, setLoaded] = useState(false);
     const [countries, setCountries] = useState<Country[]>([]);
-    const [searchValue, setSearchValue] = useState('');
     const [modalOpened, setModalOpened] = useState(false);
 
     const { setTotal, from, total, perPage, ...pagination } = usePagination();
 
     const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
 
+    const sorting = useSorting();
+
     const loadCountries = async () => {
+        const { sortProperty, sortDirection } = sorting;
         try {
             setLoaded(false);
-            const data = await api.countries.getAll(from, perPage);
+            const data = await api.countries.getAll(from, perPage, `${sortProperty},${sortDirection}`);
             setCountries(data.content);
             setTotal(data.totalElements);
         } catch (error) {
@@ -42,11 +45,7 @@ export const Countries: FC = () => {
 
     useEffect(() => {
         loadCountries();
-    }, [from]);
-
-    const handleSearch = (value: string) => {
-        setSearchValue(value?.trim());
-    };
+    }, [from, sorting.sortDirection, sorting.sortProperty]);
 
     const openModal = (country: Country | null) => {
         setSelectedCountry(country);
@@ -77,10 +76,9 @@ export const Countries: FC = () => {
             <Header
                 title={t('nav.countries')}
                 leftTool={<Button text={t('addCountry')} onClick={() => openModal(null)} icon="add_circle_outline" />}
-                rightTool={<Search onChange={handleSearch} />}
             />
             <table>
-                <TableHeader />
+                <TableHeader {...sorting} />
                 <tbody>
                     {!isEmpty(countries) &&
                         countries?.map((country) => (

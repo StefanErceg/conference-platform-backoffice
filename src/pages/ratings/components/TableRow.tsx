@@ -1,6 +1,7 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import api from '../../../api';
+import { ConfirmationModal } from '../../../components/general/ConfirmationModal';
 import { TableActions } from '../../../components/general/TableActions';
 import { RatingSchema } from '../types';
 
@@ -20,6 +21,8 @@ export const TableRow: FC<Props> = ({ ratingSchema, deleteSchema }) => {
         history.push(`/ratings/editor/${id}`);
     };
 
+    const [confirmModal, setConfirmModal] = useState(false);
+
     const deleteHandler = async () => {
         try {
             await api.ratings.deleteSchema(id);
@@ -33,7 +36,10 @@ export const TableRow: FC<Props> = ({ ratingSchema, deleteSchema }) => {
             <td className="small text_center">{id}</td>
             <td>{name}</td>
             <td>{propertiesField}</td>
-            <TableActions onEdit={editHandler} onDelete={deleteHandler} />
+            <TableActions onEdit={editHandler} onDelete={() => setConfirmModal(true)} />
+            {confirmModal ? (
+                <ConfirmationModal onConfirm={deleteHandler} onCancel={() => setConfirmModal(false)} />
+            ) : null}
         </tr>
     );
 };
